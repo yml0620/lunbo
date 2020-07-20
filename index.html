@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>lunbo</title>
+	<!-- <style>
+		*{
+			margin: 0;
+		}
+		
+	</style> -->
+	<link rel="stylesheet" href="css/index.css">
+</head>
+<body>	
+	<div class="all" id="box">
+		<div class="screen">
+			<ul>
+			<li><img src="images/wf1.jpg" width="500" height="200"></li>
+			<li><img src="images/wf2.jpg" width="500" height="200"></li>
+			<li><img src="images/wf3.jpg" width="500" height="200"></li>
+			<li><img src="images/wf4.jpg" width="500" height="200"></li>
+			<li><img src="images/wf5.jpg" width="500" height="200"></li>
+			</ul>
+			<ol>	
+			</ol>
+		</div>
+		<div id="arr">
+			<span id="left">&lt;</span>
+			<span id="right">&gt;</span>
+		</div>
+	</div>
+	<script src="js/common.js"></script>
+	<script src="js/animate.js"></script>
+	<script>
+		var box = my$('box');
+		var screen = box.children[0];
+		var ul = screen.children[0];
+		var ol = screen.children[1];
+		var arr = my$('arr');
+		var arrLeft = my$('left');
+		var arrRight = my$('right');
+		var imgWidth = screen.offsetWidth;
+
+		var count = ul.children.length;
+
+		for (var i = 0; i < count; i++) {
+			var li = document.createElement('li');
+			ol.appendChild(li);
+			// li.innerText = i +1;
+			setInnerText(li,i + 1); //兼容处理
+			li.className = '';
+			if (i === 0) {
+				li.className = 'current';
+			}
+			li.onclick = liClick;
+			li.setAttribute('index',i);
+		}
+		function liClick () {
+			for (var i = 0; i < ol.children.length; i++) {
+				var li = ol.children[i];
+				li.className = '';
+			}
+			this.className = 'current';
+			var liIndex = parseInt(this.getAttribute('index'));
+			animate(ul,-liIndex * imgWidth);
+			index = liIndex;
+		}
+		// ol.children[0].className = 'current';
+
+		box.onmouseover = function () {
+			arr.style.display = 'block';
+			clearInterval(timerId);
+		}
+		box.onmouseout = function () {
+			arr.style.display = 'none';
+			timerId = setInterval(function () {
+			arrRight.click();
+			},2000);
+		}
+		// box.onmouseenter = function () {
+		// 	arr.style.display = 'block';
+		// }
+		// box.onmouseleave = function () {
+		// 	arr.style.display = 'none';
+		// }
+		var index = 0;
+		arrRight.onclick = function () {
+			if (index === count) {
+				ul.style.left = '0px';
+				index = 0;
+			}
+			index++;
+			if (index < count) {
+				// animate(ul,-index * imgWidth);
+				// for (var i = 0; i < ol.children.length; i++) {
+				// 	var li = ol.children[i];
+				// 	li.className = '';	
+				// }
+				// ol.children[index].className = 'current';
+			
+			ol.children[index].click();
+			}else{
+				animate(ul,-index * imgWidth);
+				for (var i = 0; i < ol.children.length; i++) {
+					var li = ol.children[i];
+					li.className = '';
+				}
+				ol.children[0].className = 'current';
+			}
+
+			
+		}
+		arrLeft.onclick = function () {
+			if (index === 0) {
+				index = count;
+				ul.style.left = -index * imgWidth + 'px';
+			}
+			index --;
+			ol.children[index].click();
+
+			// if (index > 0) {
+			// 	index--;
+			// 	// animate(ul,-index * imgWidth);
+			// 	// for (var i = 0; i < ol.children.length; i++) {
+			// 	// 	var li = ol.children[i];
+			// 	// 	li.className = '';	
+			// 	// }
+			// 	// ol.children[index].className = 'current';
+
+			// ol.children[index].click();
+
+			// }
+		}
+		var firstLi = ul.children[0];
+		var cloneLi = firstLi.cloneNode(true);
+		ul.appendChild(cloneLi);
+
+		var timerId = setInterval(function () {
+			arrRight.click();
+		},2000);
+
+
+	</script>
+
+</body>
+</html>
